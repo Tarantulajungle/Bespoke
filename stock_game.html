@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .stock-market {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin: 20px auto;
+            width: 80%;
+            text-align: left;
+        }
+        .stock {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .actions {
+            margin-top: 10px;
+        }
+        .actions button {
+            margin-right: 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        #timer, #balance {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        #reward {
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        #next-button {
+            display: none; /* Hidden until the game is completed */
+        }
+        img {
+            max-width: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Stock Market Game</h1>
+    <p id="timer">Time left: 2:00</p>
+    <p id="balance">Balance: $5000</p>
+    <div class="stock-market" id="stockMarket">
+        <!-- Stocks will be displayed here -->
+    </div>
+    <div id="reward">
+        <p>Great job! You succeeded in the stock market challenge! 🎉 Here is a pic of our day in the ricefields of Bali!</p>
+        <img src="stock_game.jpeg" alt="Stock Reward Image" style="width: 200px; border-radius: 10px;">
+    </div>
+    <a href="day3_overview.html" id="next-button" class="button">Next</a>
+
+    <script>
+        const initialBalance = 5000;
+        let balance = initialBalance;
+        const stocks = [
+            { name: "TechCorp", price: 100, shares: 0 },
+            { name: "HealthInc", price: 150, shares: 0 },
+            { name: "AutoWorld", price: 200, shares: 0 }
+        ];
+        let timeLeft = 120; // 2 minutes in seconds
+        let timerActive = true;
+
+        const stockMarket = document.getElementById("stockMarket");
+        const timerElement = document.getElementById("timer");
+        const balanceElement = document.getElementById("balance");
+        const rewardElement = document.getElementById("reward");
+        const nextButton = document.getElementById("next-button");
+
+        // Initialize the stock market
+        function initializeMarket() {
+            stockMarket.innerHTML = stocks.map((stock, index) => `
+                <div class="stock">
+                    <h3>${stock.name}</h3>
+                    <p>Price: $<span id="price-${index}">${stock.price}</span></p>
+                    <p>Shares Owned: <span id="shares-${index}">${stock.shares}</span></p>
+                    <div class="actions">
+                        <button onclick="buyStock(${index})">Buy</button>
+                        <button onclick="sellStock(${index})">Sell</button>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        // Buy stock
+        function buyStock(index) {
+            const stock = stocks[index];
+            if (balance >= stock.price) {
+                stock.shares++;
+                balance -= stock.price;
+                updateUI();
+            } else {
+                alert("Not enough balance!");
+            }
+        }
+
+        // Sell stock
+        function sellStock(index) {
+            const stock = stocks[index];
+            if (stock.shares > 0) {
+                stock.shares--;
+                balance += stock.price;
+                updateUI();
+            } else {
+                alert("No shares to sell!");
+            }
+        }
+
+        // Update UI
+        function updateUI() {
+            balanceElement.textContent = `Balance: $${balance.toFixed(2)}`;
+            stocks.forEach((stock, index) => {
+                document.getElementById(`price-${index}`).textContent = stock.price.toFixed(2);
+                document.getElementById(`shares-${index}`).textContent = stock.shares;
+            });
+        }
+
+        // Randomly update stock prices
+        function updateStockPrices() {
+            stocks.forEach(stock => {
+                const change = (Math.random() * 10 - 5).toFixed(2); // Random change between -5 and +5
+                stock.price = Math.max(1, stock.price + parseFloat(change)); // Ensure price stays above $1
+            });
+            updateUI();
+        }
+
+        // Start timer
+        function startTimer() {
+            const countdown = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerElement.textContent = `Time left: ${minutes}:${seconds.toString().padStart(2, "0")}`;
+                } else {
+                    clearInterval(countdown);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        // End game
+        function endGame() {
+            stockMarket.innerHTML = ""; // Clear the stock market display
+
+            if (balance > initialBalance) {
+                rewardElement.style.display = "block"; // Show reward if the balance is greater than $5000
+            }
+
+            nextButton.style.display = "inline-block"; // Always show the Next button
+        }
+
+        // Start the game
+        initializeMarket();
+        startTimer();
+        setInterval(updateStockPrices, 5000); // Update prices every 5 seconds
+    </script>
+</body>
+</html>

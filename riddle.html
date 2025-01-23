@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riddle Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+            background-color: #f4f4f4;
+        }
+        .button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        #next-button {
+            display: none; /* Hidden until the correct answer is submitted */
+        }
+        #reward {
+            display: none; /* Hidden until the correct answer is submitted */
+            margin-top: 20px;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        img {
+            max-width: 300px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Riddle Game</h1>
+    <p>What has keys but can't open locks?</p>
+    <input type="text" id="answer" placeholder="Your Answer">
+    <button class="button" onclick="checkAnswer()">Submit</button>
+    <a href="day1_overview.html" id="next-button" class="button">Next</a>
+
+    <p id="feedback" class="feedback"></p>
+    <div id="reward">
+        <h2>Your Reward</h2>
+        <img src="riddle1.jpeg" alt="Riddle Reward">
+        <p>Congratulations, you made it! The jungle in Thailand was so beautiful!</p>
+    </div>
+
+    <script>
+        function checkAnswer() {
+            const answer = document.getElementById("answer").value.toLowerCase().trim();
+            const feedback = document.getElementById("feedback");
+            const nextButton = document.getElementById("next-button");
+            const reward = document.getElementById("reward");
+
+            if (answer === "piano") {
+                feedback.textContent = "Correct! Well done!";
+                feedback.style.color = "green";
+                nextButton.style.display = "inline-block"; // Show the "Next" button
+                reward.style.display = "block"; // Show the reward picture
+            } else {
+                feedback.textContent = "Wrong! Try again.";
+                feedback.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
