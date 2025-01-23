@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .quiz-container {
+            width: 80%;
+            margin: auto;
+            text-align: left;
+        }
+        .question {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .options {
+            margin: 10px 0;
+        }
+        .options button {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+        }
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #reward {
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        img {
+            max-width: 300px;
+            margin-top: 20px;
+        }
+        #next-button {
+            display: none; /* Hidden until the quiz is completed */
+        }
+    </style>
+</head>
+<body>
+    <h1>Trivia Quiz Game</h1>
+    <div class="quiz-container" id="quizContainer">
+        <!-- Question and options will appear here -->
+    </div>
+    <div id="message"></div>
+
+    <!-- Reward Section -->
+    <div id="reward">
+        <p>Great job! You completed the quiz! 🎉 Our Time in Paris!</p>
+        <img src="quiz.jpeg" alt="Reward Image" style="width: 200px; border-radius: 10px;">
+    </div>
+
+    <!-- Next Button -->
+    <a href="Day5_overview.html" id="next-button" class="button">Next</a>
+
+    <script>
+        const questions = [
+            {
+                question: "What country is Ferrari from?",
+                options: ["Germany", "Italy", "France", "USA"],
+                answer: "Italy"
+            },
+            {
+                question: "Which car company produces the 911 model?",
+                options: ["Ferrari", "BMW", "Porsche", "Lamborghini"],
+                answer: "Porsche"
+            },
+            {
+                question: "What country is Volvo from?",
+                options: ["Sweden", "Japan", "USA", "Germany"],
+                answer: "Sweden"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const quizContainer = document.getElementById("quizContainer");
+        const messageElement = document.getElementById("message");
+        const rewardElement = document.getElementById("reward");
+        const nextButton = document.getElementById("next-button");
+
+        // Initialize quiz
+        function initializeQuiz() {
+            showQuestion();
+        }
+
+        // Show current question
+        function showQuestion() {
+            const questionData = questions[currentQuestion];
+            quizContainer.innerHTML = `
+                <div class="question">${questionData.question}</div>
+                <div class="options">
+                    ${questionData.options
+                        .map(option => `<button onclick="submitAnswer('${option}')">${option}</button>`)
+                        .join("")}
+                </div>
+            `;
+        }
+
+        // Submit answer
+        function submitAnswer(selectedOption) {
+            const questionData = questions[currentQuestion];
+            if (selectedOption === questionData.answer) {
+                score++;
+                messageElement.textContent = "Correct! Moving to the next question.";
+                messageElement.style.color = "green";
+
+                // Move to the next question
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    setTimeout(() => {
+                        messageElement.textContent = "";
+                        showQuestion();
+                    }, 1000);
+                } else {
+                    endQuiz();
+                }
+            } else {
+                messageElement.textContent = "Wrong! Try again.";
+                messageElement.style.color = "red";
+            }
+        }
+
+        // End quiz
+        function endQuiz() {
+            quizContainer.innerHTML = ""; // Clear the quiz container
+            messageElement.textContent = "You completed the quiz!";
+            rewardElement.style.display = "block"; // Show the reward
+            nextButton.style.display = "inline-block"; // Show the Next button
+        }
+
+        // Start the quiz
+        initializeQuiz();
+    </script>
+</body>
+</html>
