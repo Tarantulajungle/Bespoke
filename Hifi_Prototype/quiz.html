@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .quiz-container {
+            width: 80%;
+            margin: auto;
+            text-align: left;
+        }
+        .question {
+            font-size: 18px;
+            margin: 20px 0;
+        }
+        .options {
+            margin: 10px 0;
+        }
+        .options button {
+            display: block;
+            margin: 5px 0;
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+        }
+        #timer, #message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #reward, #timerReward {
+            margin-top: 20px;
+            display: none;
+        }
+        img {
+            max-width: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Trivia Quiz Game</h1>
+    <p id="timer">Time for bonus left: 60 seconds</p>
+    <div class="quiz-container" id="quizContainer">
+
+    </div>
+    <div id="message"></div>
+
+
+    <div id="reward">
+        <p>Great job! You completed the quiz! 🎉 Our Time in Paris!</p>
+        <img src="paris1.jpeg" alt="Reward Image">
+    </div>
+    <div id="timerReward">
+        <p>Incredible! You finished within the time limit! Here's your bonus reward! 🌟</p>
+        <img src="paris2.jpeg" alt="Timer Reward Image">
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What country is Ferrari from?",
+                options: ["Germany", "Italy", "France", "USA"],
+                answer: "Italy"
+            },
+            {
+                question: "Which car company produces the 911 model?",
+                options: ["Ferrari", "BMW", "Porsche", "Lamborghini"],
+                answer: "Porsche"
+            },
+            {
+                question: "What country is Volvo from?",
+                options: ["Sweden", "Japan", "USA", "Germany"],
+                answer: "Sweden"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let timeLeft = 60; 
+        let timerActive = true;
+
+        const quizContainer = document.getElementById("quizContainer");
+        const timerElement = document.getElementById("timer");
+        const messageElement = document.getElementById("message");
+        const rewardElement = document.getElementById("reward");
+        const timerRewardElement = document.getElementById("timerReward");
+
+        // Initialize quiz
+        function initializeQuiz() {
+            showQuestion();
+            startTimer();
+        }
+
+        // Show current question
+        function showQuestion() {
+            const questionData = questions[currentQuestion];
+            quizContainer.innerHTML = `
+                <div class="question">${questionData.question}</div>
+                <div class="options">
+                    ${questionData.options
+                        .map(option => `<button onclick="submitAnswer('${option}')">${option}</button>`)
+                        .join("")}
+                </div>
+            `;
+        }
+
+        // Submit answer
+        function submitAnswer(selectedOption) {
+            const questionData = questions[currentQuestion];
+            if (selectedOption === questionData.answer) {
+                score++;
+                messageElement.textContent = "Correct! Moving to the next question.";
+                messageElement.style.color = "green";
+
+                // Move to the next question
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    setTimeout(() => {
+                        messageElement.textContent = "";
+                        showQuestion();
+                    }, 1000);
+                } else {
+                    endQuiz();
+                }
+            } else {
+                messageElement.textContent = "Wrong! Try again.";
+                messageElement.style.color = "red";
+            }
+        }
+
+        // Start timer
+        function startTimer() {
+            const countdown = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    timerElement.textContent = `Time for bonus left: ${timeLeft} seconds`;
+                } else {
+                    clearInterval(countdown);
+                    timerActive = false;
+                    timerElement.textContent = "Time's up!";
+                    endQuiz();
+                }
+            }, 1000);
+        }
+
+        // End quiz
+        function endQuiz() {
+            quizContainer.innerHTML = "";
+            messageElement.textContent = `You completed the quiz!`;
+            rewardElement.style.display = "block";
+
+            if (timerActive) {
+                timerRewardElement.style.display = "block";
+            }
+        }
+
+        // Start the quiz
+        initializeQuiz();
+    </script>
+</body>
+</html>

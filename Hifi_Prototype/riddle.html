@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riddle Game with Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #message, #timer {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #reward, #timerReward {
+            margin-top: 20px;
+            display: none; 
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        img {
+            max-width: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Riddle Game</h1>
+    <p id="riddle">What has 4 legs but can’t walk?</p>
+    <p id="timer">Time for bonus left: 60 seconds</p>
+    <input type="text" id="answer" placeholder="Enter your answer here">
+    <button onclick="checkAnswer()">Submit</button>
+    <p id="message"></p>
+
+   
+    <div id="reward">
+        <p>Do you remember the time we spent in indonesia? 😊</p>
+        <img src="indonesia3.jpeg" alt="Reward Image">
+    </div>
+    <div id="timerReward">
+        <p>Wow! You answered quickly! Here's a bonus memory! 🎉</p>
+        <img src="indonesia4.jpeg" alt="Timer Reward Image">
+    </div>
+
+    <script>
+        let timeLeft = 60; 
+        let timerActive = true; 
+
+        // Start the timer
+        const timerElement = document.getElementById("timer");
+        const countdown = setInterval(() => {
+            if (timeLeft > 0) {
+                timeLeft--;
+                timerElement.textContent = `Time for bonus left: ${timeLeft} seconds`;
+            } else {
+                clearInterval(countdown);
+                timerActive = false; 
+                timerElement.textContent = "Time's up!"; 
+            }
+        }, 1000);
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById("answer").value.toLowerCase().trim();
+            const correctAnswers = ["chair", "table"]; 
+            const messageElement = document.getElementById("message");
+            const rewardElement = document.getElementById("reward");
+            const timerRewardElement = document.getElementById("timerReward");
+
+            if (correctAnswers.includes(userAnswer)) {
+                messageElement.textContent = "Correct! Well done!";
+                messageElement.style.color = "green";
+
+                // Show the main reward
+                rewardElement.style.display = "block";
+
+                // Show the timer-based reward if the timer is still active
+                if (timerActive) {
+                    timerRewardElement.style.display = "block";
+                }
+            } else {
+                messageElement.textContent = "Incorrect! Try again.";
+                messageElement.style.color = "red";
+
+                // Hide the rewards if the answer is incorrect
+                rewardElement.style.display = "none";
+                timerRewardElement.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>

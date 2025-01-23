@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .puzzle-container {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            gap: 10px;
+        }
+        .piece, .slot {
+            width: 80px;
+            height: 80px;
+            border: 1px solid #000;
+            background-size: 240px 240px;
+            background-position: center;
+        }
+        .piece {
+            cursor: grab;
+            background-color: #ddd;
+        }
+        .matched {
+            pointer-events: none;
+            border-color: green;
+        }
+        #timer, #message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #reward, #timerReward {
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+        }
+        img {
+            max-width: 300px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Puzzle Game</h1>
+    <p id="timer">Time for bonus left: 100 seconds</p>
+    <div id="message"></div>
+    <div class="container">
+        <div class="puzzle-container" id="slots">
+            <!-- Slots where puzzle pieces go -->
+        </div>
+        <div class="puzzle-container" id="pieces">
+            <!-- Draggable puzzle pieces -->
+        </div>
+    </div>
+
+    <!-- Reward Sections -->
+    <div id="reward">
+        <p>Great job! You completed the puzzle! 🎉 At the beach 🌊</p>
+        <img src="thailand3.jpeg" alt="Reward Image">
+    </div>
+    <div id="timerReward">
+        <p>Incredible! You finished within the time limit! Here's your bonus reward! 🌟</p>
+        <img src="indonesia2.jpeg" alt="Timer Reward Image">
+    </div>
+
+    <script>
+        const imageURL = "indonesia1.jpeg"; // Replace with your image URL
+        const piecesData = [
+            { id: "1", background: "0px 0px" },
+            { id: "2", background: "-80px 0px" },
+            { id: "3", background: "-160px 0px" },
+            { id: "4", background: "0px -80px" },
+            { id: "5", background: "-80px -80px" },
+            { id: "6", background: "-160px -80px" },
+            { id: "7", background: "0px -160px" },
+            { id: "8", background: "-80px -160px" },
+            { id: "9", background: "-160px -160px" }
+        ]; // Puzzle pieces info
+        let timeLeft = 100; // Time limit in seconds
+        let timerActive = true;
+        let matchedPieces = 0;
+
+        const timerElement = document.getElementById("timer");
+        const messageElement = document.getElementById("message");
+        const rewardElement = document.getElementById("reward");
+        const timerRewardElement = document.getElementById("timerReward");
+        const slotsContainer = document.getElementById("slots");
+        const piecesContainer = document.getElementById("pieces");
+
+        // Shuffle array
+        function shuffle(array) {
+            return array.sort(() => 0.5 - Math.random());
+        }
+
+        // Initialize puzzle
+        function initializePuzzle() {
+            // Create slots
+            piecesData.forEach((piece) => {
+                const slot = document.createElement("div");
+                slot.classList.add("slot");
+                slot.dataset.id = piece.id;
+                slotsContainer.appendChild(slot);
+            });
+
+            // Create draggable pieces
+            const shuffledPieces = shuffle([...piecesData]);
+            shuffledPieces.forEach((piece) => {
+                const pieceElement = document.createElement("div");
+                pieceElement.classList.add("piece");
+                pieceElement.draggable = true;
+                pieceElement.dataset.id = piece.id;
+                pieceElement.style.backgroundImage = `url(${imageURL})`;
+                pieceElement.style.backgroundPosition = piece.background;
+                piecesContainer.appendChild(pieceElement);
+
+                // Drag events
+                pieceElement.addEventListener("dragstart", dragStart);
+            });
+
+            // Allow slots to accept pieces
+            const slots = document.querySelectorAll(".slot");
+            slots.forEach((slot) => {
+                slot.addEventListener("dragover", dragOver);
+                slot.addEventListener("drop", dropPiece);
+            });
+
+            startTimer();
+        }
+
+        // Drag start
+        function dragStart(event) {
+            event.dataTransfer.setData("text/plain", event.target.dataset.id);
+        }
+
+        // Allow dropping
+        function dragOver(event) {
+            event.preventDefault();
+        }
+
+        // Drop piece
+        function dropPiece(event) {
+            event.preventDefault();
+            const draggedPieceId = event.dataTransfer.getData("text/plain");
+            const slotId = event.target.dataset.id;
+
+            if (draggedPieceId === slotId) {
+                event.target.style.backgroundImage = `url(${imageURL})`;
+                const pieceInfo = piecesData.find(piece => piece.id === draggedPieceId);
+                event.target.style.backgroundPosition = pieceInfo.background;
+                event.target.classList.add("matched");
+                matchedPieces++;
+
+                // Remove the dragged piece
+                const draggedPiece = document.querySelector(`.piece[data-id='${draggedPieceId}']`);
+                draggedPiece.remove();
+
+                // Check if the puzzle is complete
+                if (matchedPieces === piecesData.length) {
+                    endGame();
+                }
+            }
+        }
+
+        // Start timer
+        function startTimer() {
+            const countdown = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    timerElement.textContent = `Time for bonus left: ${timeLeft} seconds`;
+                } else {
+                    clearInterval(countdown);
+                    timerActive = false;
+                    timerElement.textContent = "Time's up!";
+                }
+            }, 1000);
+        }
+
+        // End game
+        function endGame() {
+            messageElement.textContent = "You completed the puzzle!";
+            rewardElement.style.display = "block";
+
+            if (timerActive) {
+                timerRewardElement.style.display = "block";
+            }
+        }
+
+        // Initialize the game
+        initializePuzzle();
+    </script>
+</body>
+</html>
