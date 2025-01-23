@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            cursor: pointer;
+            border: 1px solid #000;
+        }
+        .matched {
+            background-color: #8f8;
+            pointer-events: none;
+        }
+        #timer, #message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #reward, #timerReward {
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+        }
+        img {
+            max-width: 300px;
+            margin-top: 20px;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        #next-button {
+            display: none; /* Hidden until the game is completed */
+        }
+    </style>
+</head>
+<body>
+    <h1>Memory Game</h1>
+    <p id="timer">Time for bonus left: 120 seconds</p>
+    <div class="game-board" id="gameBoard"></div>
+    <p id="message"></p>
+
+    <!-- Reward Sections -->
+    <div id="reward">
+        <p>Great job! You completed the game! 🎉 Remember when we took that trip to Thailand?</p>
+        <img src="memory1.jpeg" alt="Reward Image" style="width: 200px; border-radius: 10px;">
+    </div>
+    <div id="timerReward">
+        <p>Incredible! You finished within the time limit! Here's your bonus reward! 🌟</p>
+        <img src="memory2.jpeg" alt="Timer Reward Image" style="width: 200px; border-radius: 10px;">
+    </div>
+
+    <!-- Next Button -->
+    <a href="day2_overview.html" id="next-button" class="button">Next</a>
+
+    <script>
+        const cardsArray = [
+            "🍎", "🍎", "🍌", "🍌",
+            "🍇", "🍇", "🍉", "🍉",
+            "🍓", "🍓", "🍒", "🍒",
+            "🍍", "🍍", "🥭", "🥭"
+        ]; // Memory cards (8 pairs)
+        let shuffledCards = [];
+        let flippedCards = [];
+        let matchedCards = 0;
+        let timeLeft = 120; // Increased time for more pairs
+        let timerActive = true;
+
+        const gameBoard = document.getElementById("gameBoard");
+        const timerElement = document.getElementById("timer");
+        const messageElement = document.getElementById("message");
+        const rewardElement = document.getElementById("reward");
+        const timerRewardElement = document.getElementById("timerReward");
+        const nextButton = document.getElementById("next-button");
+
+        // Shuffle cards
+        function shuffle(array) {
+            return array.sort(() => 0.5 - Math.random());
+        }
+
+        // Initialize game
+        function initializeGame() {
+            shuffledCards = shuffle(cardsArray);
+            shuffledCards.forEach((card, index) => {
+                const cardElement = document.createElement("div");
+                cardElement.classList.add("card");
+                cardElement.dataset.index = index;
+                cardElement.dataset.value = card;
+                cardElement.addEventListener("click", flipCard);
+                gameBoard.appendChild(cardElement);
+            });
+
+            startTimer();
+        }
+
+        // Flip card
+        function flipCard(event) {
+            const cardElement = event.target;
+            const cardValue = cardElement.dataset.value;
+
+            if (flippedCards.length < 2 && !cardElement.classList.contains("matched") && !cardElement.textContent) {
+                cardElement.textContent = cardValue;
+                flippedCards.push(cardElement);
+
+                if (flippedCards.length === 2) {
+                    checkMatch();
+                }
+            }
+        }
+
+        // Check for a match
+        function checkMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.value === card2.dataset.value) {
+                card1.classList.add("matched");
+                card2.classList.add("matched");
+                matchedCards += 2;
+                flippedCards = [];
+
+                if (matchedCards === cardsArray.length) {
+                    endGame();
+                }
+            } else {
+                setTimeout(() => {
+                    card1.textContent = "";
+                    card2.textContent = "";
+                    flippedCards = [];
+                }, 1000);
+            }
+        }
+
+        // Start timer
+        function startTimer() {
+            const countdown = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    timerElement.textContent = `Time for bonus left: ${timeLeft} seconds`;
+                } else {
+                    clearInterval(countdown);
+                    timerActive = false;
+                    timerElement.textContent = "Time's up!";
+                }
+            }, 1000);
+        }
+
+        // End game
+        function endGame() {
+            messageElement.textContent = "You completed the game!";
+            rewardElement.style.display = "block";
+
+            // Store bonus status in localStorage
+            if (timerActive) {
+                localStorage.setItem("memoryBonusAchieved", "true");
+                timerRewardElement.style.display = "block"; // Show bonus reward
+            } else {
+                localStorage.setItem("memoryBonusAchieved", "false");
+            }
+
+            nextButton.style.display = "inline-block"; // Show the Next button
+        }
+
+        // Start the game
+        initializeGame();
+    </script>
+</body>
+</html>
