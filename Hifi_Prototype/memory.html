@@ -38,7 +38,7 @@
         }
         #reward, #timerReward {
             margin-top: 20px;
-            display: none; /* Hidden by default */
+            display: none; 
         }
         img {
             max-width: 300px;
@@ -52,7 +52,7 @@
     <div class="game-board" id="gameBoard"></div>
     <p id="message"></p>
 
-    <!-- Reward Sections -->
+
     <div id="reward">
         <p>Great job! You completed the game! 🎉 Remember when we took that trip to Thailand?</p>
         <img src="thailand2.jpeg" alt="Reward Image">
@@ -66,7 +66,7 @@
         const cardsArray = [
             "🍎", "🍎", "🍌", "🍌",
             "🍇", "🍇", "🍉", "🍉"
-        ]; // Memory cards
+        ]; 
         let shuffledCards = [];
         let flippedCards = [];
         let matchedCards = 0;
@@ -79,12 +79,12 @@
         const rewardElement = document.getElementById("reward");
         const timerRewardElement = document.getElementById("timerReward");
 
-        // Shuffle cards
+        
         function shuffle(array) {
             return array.sort(() => 0.5 - Math.random());
         }
 
-        // Initialize game
+        
         function initializeGame() {
             shuffledCards = shuffle(cardsArray);
             shuffledCards.forEach((card, index) => {
@@ -99,7 +99,7 @@
             startTimer();
         }
 
-        // Flip card
+       
         function flipCard(event) {
             const cardElement = event.target;
             const cardValue = cardElement.dataset.value;
@@ -114,7 +114,7 @@
             }
         }
 
-        // Check for a match
+     
         function checkMatch() {
             const [card1, card2] = flippedCards;
             if (card1.dataset.value === card2.dataset.value) {
@@ -135,7 +135,7 @@
             }
         }
 
-        // Start timer
+      
         function startTimer() {
             const countdown = setInterval(() => {
                 if (timeLeft > 0) {
@@ -149,7 +149,7 @@
             }, 1000);
         }
 
-        // End game
+    
         function endGame() {
             messageElement.textContent = "You completed the game!";
             rewardElement.style.display = "block";
@@ -159,7 +159,7 @@
             }
         }
 
-        // Start the game
+  
         initializeGame();
     </script>
 </body>
