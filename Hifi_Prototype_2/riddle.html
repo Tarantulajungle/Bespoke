@@ -27,10 +27,10 @@
             background-color: #0056b3;
         }
         #next-button {
-            display: none; /* Hidden until the correct answer is submitted */
+            display: none; 
         }
         #reward {
-            display: none; /* Hidden until the correct answer is submitted */
+            display: none; 
             margin-top: 20px;
         }
         .feedback {
@@ -68,8 +68,8 @@
             if (answer === "piano") {
                 feedback.textContent = "Correct! Well done!";
                 feedback.style.color = "green";
-                nextButton.style.display = "inline-block"; // Show the "Next" button
-                reward.style.display = "block"; // Show the reward picture
+                nextButton.style.display = "inline-block"; 
+                reward.style.display = "block"; 
             } else {
                 feedback.textContent = "Wrong! Try again.";
                 feedback.style.color = "red";
