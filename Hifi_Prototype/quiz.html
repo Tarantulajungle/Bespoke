@@ -91,13 +91,13 @@
         const rewardElement = document.getElementById("reward");
         const timerRewardElement = document.getElementById("timerReward");
 
-        // Initialize quiz
+        
         function initializeQuiz() {
             showQuestion();
             startTimer();
         }
 
-        // Show current question
+      
         function showQuestion() {
             const questionData = questions[currentQuestion];
             quizContainer.innerHTML = `
@@ -110,7 +110,7 @@
             `;
         }
 
-        // Submit answer
+
         function submitAnswer(selectedOption) {
             const questionData = questions[currentQuestion];
             if (selectedOption === questionData.answer) {
@@ -118,7 +118,7 @@
                 messageElement.textContent = "Correct! Moving to the next question.";
                 messageElement.style.color = "green";
 
-                // Move to the next question
+           
                 currentQuestion++;
                 if (currentQuestion < questions.length) {
                     setTimeout(() => {
@@ -134,7 +134,7 @@
             }
         }
 
-        // Start timer
+
         function startTimer() {
             const countdown = setInterval(() => {
                 if (timeLeft > 0) {
@@ -149,7 +149,7 @@
             }, 1000);
         }
 
-        // End quiz
+       
         function endQuiz() {
             quizContainer.innerHTML = "";
             messageElement.textContent = `You completed the quiz!`;
@@ -160,7 +160,7 @@
             }
         }
 
-        // Start the quiz
+      
         initializeQuiz();
     </script>
 </body>
