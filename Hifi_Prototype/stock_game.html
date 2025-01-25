@@ -76,7 +76,7 @@
             { name: "HealthInc", price: 150, shares: 0 },
             { name: "AutoWorld", price: 200, shares: 0 }
         ];
-        let timeLeft = 180; // 3 minutes in seconds
+        let timeLeft = 180; 
 
         const stockMarket = document.getElementById("stockMarket");
         const timerElement = document.getElementById("timer");
@@ -85,7 +85,7 @@
         const rewardElement = document.getElementById("reward");
         const bonusRewardElement = document.getElementById("bonusReward");
 
-        // Initialize the stock market
+      
         function initializeMarket() {
             stockMarket.innerHTML = stocks.map((stock, index) => `
                 <div class="stock">
@@ -100,7 +100,7 @@
             `).join("");
         }
 
-        // Buy stock
+     
         function buyStock(index) {
             const stock = stocks[index];
             if (balance >= stock.price) {
@@ -112,7 +112,7 @@
             }
         }
 
-        // Sell stock
+  
         function sellStock(index) {
             const stock = stocks[index];
             if (stock.shares > 0) {
@@ -124,7 +124,7 @@
             }
         }
 
-        // Update UI
+     
         function updateUI() {
             balanceElement.textContent = `Balance: $${balance.toFixed(2)}`;
             stocks.forEach((stock, index) => {
@@ -133,16 +133,16 @@
             });
         }
 
-        // Randomly update stock prices
+       
         function updateStockPrices() {
             stocks.forEach(stock => {
-                const change = (Math.random() * 10 - 5).toFixed(2); // Random change between -5 and +5
-                stock.price = Math.max(1, stock.price + parseFloat(change)); // Ensure price stays above $1
+                const change = (Math.random() * 10 - 5).toFixed(2);
+                stock.price = Math.max(1, stock.price + parseFloat(change));
             });
             updateUI();
         }
 
-        // Start the game timer
+ 
         function startTimer() {
             const countdown = setInterval(() => {
                 if (timeLeft > 0) {
@@ -157,7 +157,7 @@
             }, 1000);
         }
 
-        // End the game
+
         function endGame() {
             stockMarket.innerHTML = "";
             endMessage.textContent = `Game Over! Your final balance is $${balance.toFixed(2)}.`;
@@ -171,10 +171,10 @@
             }
         }
 
-        // Start the simulation
+    
         initializeMarket();
         startTimer();
-        setInterval(updateStockPrices, 5000); // Update prices every 5 seconds
+        setInterval(updateStockPrices, 5000);
     </script>
 </body>
 </html>
