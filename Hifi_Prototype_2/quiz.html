@@ -35,7 +35,7 @@
         }
         #reward {
             margin-top: 20px;
-            display: none; /* Hidden by default */
+            display: none;
         }
         .button {
             display: inline-block;
@@ -56,24 +56,24 @@
             margin-top: 20px;
         }
         #next-button {
-            display: none; /* Hidden until the quiz is completed */
+            display: none; 
         }
     </style>
 </head>
 <body>
     <h1>Trivia Quiz Game</h1>
     <div class="quiz-container" id="quizContainer">
-        <!-- Question and options will appear here -->
+     
     </div>
     <div id="message"></div>
 
-    <!-- Reward Section -->
+  
     <div id="reward">
         <p>Great job! You completed the quiz! 🎉 Our Time in Paris!</p>
         <img src="quiz.jpeg" alt="Reward Image" style="width: 200px; border-radius: 10px;">
     </div>
 
-    <!-- Next Button -->
+
     <a href="Day5_overview.html" id="next-button" class="button">Next</a>
 
     <script>
@@ -103,12 +103,12 @@
         const rewardElement = document.getElementById("reward");
         const nextButton = document.getElementById("next-button");
 
-        // Initialize quiz
+    
         function initializeQuiz() {
             showQuestion();
         }
 
-        // Show current question
+       
         function showQuestion() {
             const questionData = questions[currentQuestion];
             quizContainer.innerHTML = `
@@ -121,7 +121,7 @@
             `;
         }
 
-        // Submit answer
+   
         function submitAnswer(selectedOption) {
             const questionData = questions[currentQuestion];
             if (selectedOption === questionData.answer) {
@@ -129,7 +129,7 @@
                 messageElement.textContent = "Correct! Moving to the next question.";
                 messageElement.style.color = "green";
 
-                // Move to the next question
+             
                 currentQuestion++;
                 if (currentQuestion < questions.length) {
                     setTimeout(() => {
@@ -145,15 +145,15 @@
             }
         }
 
-        // End quiz
+       
         function endQuiz() {
-            quizContainer.innerHTML = ""; // Clear the quiz container
+            quizContainer.innerHTML = ""; 
             messageElement.textContent = "You completed the quiz!";
-            rewardElement.style.display = "block"; // Show the reward
-            nextButton.style.display = "inline-block"; // Show the Next button
+            rewardElement.style.display = "block"; 
+            nextButton.style.display = "inline-block"; 
         }
 
-        // Start the quiz
+       
         initializeQuiz();
     </script>
 </body>
