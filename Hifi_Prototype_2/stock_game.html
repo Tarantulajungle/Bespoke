@@ -38,7 +38,7 @@
         }
         #reward {
             margin-top: 20px;
-            display: none; /* Hidden by default */
+            display: none;
         }
         .button {
             display: inline-block;
@@ -56,7 +56,7 @@
             background-color: #0056b3;
         }
         #next-button {
-            display: none; /* Hidden until the game is completed */
+            display: none; 
         }
         img {
             max-width: 300px;
@@ -69,7 +69,7 @@
     <p id="timer">Time left: 2:00</p>
     <p id="balance">Balance: $5000</p>
     <div class="stock-market" id="stockMarket">
-        <!-- Stocks will be displayed here -->
+       
     </div>
     <div id="reward">
         <p>Great job! You succeeded in the stock market challenge! 🎉 Here is a pic of our day in the ricefields of Bali!</p>
@@ -85,7 +85,7 @@
             { name: "HealthInc", price: 150, shares: 0 },
             { name: "AutoWorld", price: 200, shares: 0 }
         ];
-        let timeLeft = 120; // 2 minutes in seconds
+        let timeLeft = 120; 
         let timerActive = true;
 
         const stockMarket = document.getElementById("stockMarket");
@@ -94,7 +94,7 @@
         const rewardElement = document.getElementById("reward");
         const nextButton = document.getElementById("next-button");
 
-        // Initialize the stock market
+    
         function initializeMarket() {
             stockMarket.innerHTML = stocks.map((stock, index) => `
                 <div class="stock">
@@ -109,7 +109,7 @@
             `).join("");
         }
 
-        // Buy stock
+ 
         function buyStock(index) {
             const stock = stocks[index];
             if (balance >= stock.price) {
@@ -121,7 +121,7 @@
             }
         }
 
-        // Sell stock
+    
         function sellStock(index) {
             const stock = stocks[index];
             if (stock.shares > 0) {
@@ -133,7 +133,7 @@
             }
         }
 
-        // Update UI
+
         function updateUI() {
             balanceElement.textContent = `Balance: $${balance.toFixed(2)}`;
             stocks.forEach((stock, index) => {
@@ -142,16 +142,16 @@
             });
         }
 
-        // Randomly update stock prices
+   
         function updateStockPrices() {
             stocks.forEach(stock => {
-                const change = (Math.random() * 10 - 5).toFixed(2); // Random change between -5 and +5
-                stock.price = Math.max(1, stock.price + parseFloat(change)); // Ensure price stays above $1
+                const change = (Math.random() * 10 - 5).toFixed(2); 
+                stock.price = Math.max(1, stock.price + parseFloat(change)); 
             });
             updateUI();
         }
 
-        // Start timer
+      
         function startTimer() {
             const countdown = setInterval(() => {
                 if (timeLeft > 0) {
@@ -166,21 +166,21 @@
             }, 1000);
         }
 
-        // End game
+      
         function endGame() {
-            stockMarket.innerHTML = ""; // Clear the stock market display
+            stockMarket.innerHTML = "";
 
             if (balance > initialBalance) {
-                rewardElement.style.display = "block"; // Show reward if the balance is greater than $5000
+                rewardElement.style.display = "block"; 
             }
 
-            nextButton.style.display = "inline-block"; // Always show the Next button
+            nextButton.style.display = "inline-block"; 
         }
 
-        // Start the game
+        
         initializeMarket();
         startTimer();
-        setInterval(updateStockPrices, 5000); // Update prices every 5 seconds
+        setInterval(updateStockPrices, 5000);
     </script>
 </body>
 </html>
