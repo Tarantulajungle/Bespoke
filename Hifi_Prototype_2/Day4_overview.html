@@ -43,13 +43,13 @@
         <h1>Day 4 Complete</h1>
         <p>Fantastic work! Here's what you earned today and from the previous days:</p>
         
-        <!-- Riddle Reward -->
+     
         <div class="reward">
             <img src="riddle1.jpeg" alt="Riddle Reward">
             <p>Riddle Game Reward</p>
         </div>
         
-        <!-- Memory Rewards -->
+      
         <div class="reward">
             <img src="memory1.jpeg" alt="Memory Reward">
             <p>Memory Reward</p>
@@ -59,13 +59,13 @@
             <p>Bonus Memory Reward</p>
         </div>
         
-        <!-- Stock Game Reward -->
+
         <div class="reward">
             <img src="stock_game.jpeg" alt="Stock Reward">
             <p>Stock Game Reward</p>
         </div>
         
-        <!-- Puzzle Rewards -->
+   
         <div class="reward">
             <img src="puzzle.jpeg" alt="Main Puzzle Reward">
             <p>Main Puzzle Reward</p>
@@ -75,18 +75,18 @@
             <p>Bonus Puzzle Reward</p>
         </div>
 
-        <!-- Next Button -->
+   
         <a href="Day5.html" class="button">Next Day</a>
     </div>
 
     <script>
-        // Display Bonus Puzzle Reward
+  
         const puzzleBonusAchieved = localStorage.getItem("puzzleBonusAchieved");
         if (puzzleBonusAchieved === "true") {
             document.getElementById("bonus-puzzle-reward").style.display = "block";
         }
 
-        // Display Bonus Memory Reward
+ 
         const memoryBonusAchieved = localStorage.getItem("memoryBonusAchieved");
         if (memoryBonusAchieved === "true") {
             document.getElementById("bonus-memory-reward").style.display = "block";
