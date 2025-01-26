@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day 1 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f4f4f4;
+        }
+        .content {
+            max-width: 600px;
+            margin: auto;
+        }
+        .reward {
+            margin: 20px 0;
+        }
+        .button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .notification {
+            display: none; /* Hidden by default */
+            background-color: #e3f2fd;
+            padding: 15px;
+            margin-top: 20px;
+            border: 1px solid #90caf9;
+            border-radius: 5px;
+        }
+        .video-container {
+            display: none; /* Initially hidden */
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>Connect to the gift-giver, a surprise is waiting for you...👀</h1>
+        <!-- Button -->
+        <a href="#" class="button" id="connect-button">Connect to Gift-Giver</a>
+
+        <!-- Notification -->
+        <div class="notification" id="notification">
+            Connecting to the gift-giver... please wait!
+        </div>
+
+        <!-- Video -->
+        <div class="video-container" id="video-container">
+            <video width="100%" controls autoplay>
+                <source src="Final_Notif.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+    </div>
+
+    <script>
+        // Button click event
+        document.getElementById('connect-button').addEventListener('click', function () {
+            const button = document.getElementById('connect-button');
+            const notification = document.getElementById('notification');
+            const videoContainer = document.getElementById('video-container');
+
+            // Hide button and show notification
+            button.style.display = 'none';
+            notification.style.display = 'block';
+
+            // Show the video after 3 seconds
+            setTimeout(() => {
+                notification.style.display = 'none'; // Hide the notification
+                videoContainer.style.display = 'block'; // Show the video
+            }, 3000); // 3-second delay
+        });
+    </script>
+</body>
+</html>
